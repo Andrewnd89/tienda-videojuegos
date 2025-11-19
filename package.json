@@ -1,0 +1,16 @@
+{
+  "name": "tienda-videojuegos",
+  "version": "1.0.0",
+  "description": "Tienda de videojuegos con ofertas",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o ./public/output.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./public/output.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "tailwindcss": "^4.1.0"
+  }
+}
