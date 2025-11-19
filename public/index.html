@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameDeal Pro - Las Mejores Ofertas en Videojuegos</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+    <link rel="stylesheet" href="output.css">
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
+
+    <header class="bg-black/40 backdrop-blur-lg border-b border-purple-500/30 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col gap-4">
+     
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+                        🎮 GameDeal Pro
+                    </h1>
+                    <p class="text-gray-300 mt-2 text-sm md:text-base">Descubre las mejores ofertas en videojuegos de todas las tiendas</p>
+                </div>
+
+           
+                <div class="flex gap-2 max-w-2xl mx-auto w-full">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Buscar videojuegos..."
+                        class="flex-1 px-4 py-3 rounded-lg bg-white/10 border border-purple-500/30 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
+                    >
+                    <button 
+                        id="searchBtn"
+                        class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all hover:scale-105 active:scale-95"
+                    >
+                        🔍 Buscar
+                    </button>
+                </div>
+
+
+                <div class="flex flex-col md:flex-row gap-3 items-center justify-center">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm text-gray-300">Tienda:</label>
+                        <select 
+                            id="storeFilter"
+                            class="px-4 py-2 rounded-lg bg-white/10 border border-purple-500/30 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all cursor-pointer"
+                        >
+                            <option value="">Todas las tiendas</option>
+                            <option value="1">Steam</option>
+                            <option value="2">GamersGate</option>
+                            <option value="3">GreenManGaming</option>
+                            <option value="7">GOG</option>
+                            <option value="8">Origin</option>
+                            <option value="11">Humble Store</option>
+                            <option value="13">Uplay</option>
+                            <option value="15">Fanatical</option>
+                            <option value="25">Epic Games Store</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm text-gray-300">Ordenar por:</label>
+                        <select 
+                            id="sortFilter"
+                            class="px-4 py-2 rounded-lg bg-white/10 border border-purple-500/30 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all cursor-pointer"
+                        >
+                            <option value="deal">Mejor oferta</option>
+                            <option value="price-asc">Precio: menor a mayor</option>
+                            <option value="price-desc">Precio: mayor a menor</option>
+                            <option value="savings">Mayor descuento</option>
+                        </select>
+                    </div>
+
+                    <button 
+                        id="resetBtn"
+                        class="px-4 py-2 rounded-lg bg-red-600/80 hover:bg-red-600 transition-all text-sm font-medium"
+                    >
+                        🔄 Restablecer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <div id="loadingIndicator" class="hidden">
+            <div class="flex flex-col items-center justify-center py-20">
+                <div class="relative w-24 h-24">
+
+                    <div class="absolute inset-0 border-4 border-purple-500/30 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-transparent border-t-purple-500 rounded-full animate-spin"></div>
+                </div>
+                <p class="mt-6 text-xl font-semibold text-purple-300 animate-pulse">Cargando videojuegos...</p>
+            </div>
+        </div>
+
+        <div id="errorMessage" class="hidden">
+            <div class="bg-red-500/20 border border-red-500 rounded-lg p-6 text-center max-w-md mx-auto">
+                <p class="text-2xl mb-2">⚠️</p>
+                <p class="text-xl font-semibold mb-2">Error al cargar los datos</p>
+                <p class="text-gray-300 text-sm">No se pudo conectar con la API. Por favor, intenta de nuevo más tarde.</p>
+                <button id="retryBtn" class="mt-4 px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition-all">
+                    Reintentar
+                </button>
+            </div>
+        </div>
+
+        <div id="gamesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+        </div>
+
+
+        <div class="flex justify-center mt-8">
+            <button 
+                id="loadMoreBtn"
+                class="hidden px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all hover:scale-105 active:scale-95"
+            >
+                Ver más videojuegos
+            </button>
+        </div>
+    </main>
+
+    
+    <div id="gameModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-gradient-to-br from-slate-800 to-purple-900 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2 border-purple-500/30 shadow-2xl">
+            <div class="p-6">
+          
+                <div class="flex justify-end mb-4">
+                    <button id="closeModal" class="text-gray-400 hover:text-white transition-colors text-2xl">
+                        ✕
+                    </button>
+                </div>
+
+
+                <div id="modalContent">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-black/40 border-t border-purple-500/30 mt-20 py-6">
+        <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
+            <p>© 2025 GameDeal Pro - Proyecto Académico</p>
+            <p class="mt-2">Datos proporcionados por CheapShark API</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
